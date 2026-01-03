@@ -5,7 +5,7 @@ export type NetworkStatus = {
   type: "cellular" | "wifi" | "ethernet" | "bluetooth" | "unknown";
 };
 
-export type Quality = "offline" | "low" | "medium" | "high";
+export type Quality = "offline" | "low" | "medium" | "high"; // gauge svg
 
 export function getQualityMode(networkStatus: NetworkStatus): Quality {
   if (!networkStatus.online) return "offline";

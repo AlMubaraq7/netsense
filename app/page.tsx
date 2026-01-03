@@ -1,5 +1,5 @@
 "use client";
-import { NetworkStatusPill } from "@/components/NetworkStatusPill";
+import { NetworkStatusPills } from "@/components/NetworkStatusPills";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { getQualityMode } from "@/lib/qualityMode";
 import DataSaverBanner from "@/components/DataSaverBanner";
@@ -9,10 +9,13 @@ export default function Home() {
   const network = useNetworkStatus();
   const quality = getQualityMode(network);
   return (
-    <main>
-      <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans">
+    <main className="flex flex-col bg-zinc-100">
+      <nav className="flex justify-between items-center px-8 py-6">
+        <span className="text-blue-600 text-2xl font-bold">NetSense</span>
+        <NetworkStatusPills networkStatus={network} />
+      </nav>
+      <div className="">
         <div className="flex justify-between items-center gap-4">
-          <NetworkStatusPill quality={quality} />
           <DataSaverBanner
             quality={quality}
             onOverride={() => console.log("clicked")}
