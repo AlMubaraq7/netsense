@@ -6,7 +6,6 @@ export function useNetworkStatus(): NetworkStatus {
     effectiveType: "4g",
     saveData: false,
     online: true,
-    type: "unknown",
   });
 
   useEffect(() => {
@@ -15,7 +14,6 @@ export function useNetworkStatus(): NetworkStatus {
         effectiveType: (navigator as any).connection?.effectiveType || "4g",
         saveData: (navigator as any).connection?.saveData || false,
         online: navigator.onLine,
-        type: (navigator as any).connection?.type || "unknown",
       });
     };
     updateStatus();

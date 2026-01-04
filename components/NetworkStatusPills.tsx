@@ -91,43 +91,6 @@ function OnlinePill({ online }: { online: boolean }) {
   );
 }
 
-// Connection Type pill component
-function ConnectionTypePill({ type }: { type: NetworkStatus["type"] }) {
-  const colorMap: Record<NetworkStatus["type"], string> = {
-    cellular: "bg-blue-100/70 text-blue-600",
-    wifi: "bg-indigo-100/70 text-indigo-600",
-    ethernet: "bg-cyan-100/70 text-cyan-600",
-    bluetooth: "bg-teal-100/70 text-teal-600",
-    unknown: "bg-gray-100/70 text-gray-600",
-  };
-
-  const dotColorMap: Record<NetworkStatus["type"], string> = {
-    cellular: "bg-blue-500",
-    wifi: "bg-indigo-500",
-    ethernet: "bg-cyan-500",
-    bluetooth: "bg-teal-500",
-    unknown: "bg-gray-400",
-  };
-
-  return (
-    <div
-      className={`px-4 py-1 rounded-full font-semibold text-base flex items-center gap-2 ${colorMap[type]} cursor-pointer`}
-    >
-      <div
-        className={`relative flex h-2 w-2 rounded-full ${dotColorMap[type]}`}
-      >
-        <span
-          className={`animate-ping absolute inline-flex h-full w-full rounded-full ${dotColorMap[type]} opacity-75`}
-        ></span>
-        <span
-          className={`relative inline-flex rounded-full h-2 w-2 ${dotColorMap[type]}`}
-        ></span>
-      </div>
-      {type.charAt(0).toUpperCase() + type.slice(1)}
-    </div>
-  );
-}
-
 // Main component that displays all network status pills
 export function NetworkStatusPills({ networkStatus }: Props) {
   return (
@@ -135,7 +98,6 @@ export function NetworkStatusPills({ networkStatus }: Props) {
       <EffectiveTypePill effectiveType={networkStatus.effectiveType} />
       <SaveDataPill saveData={networkStatus.saveData} />
       <OnlinePill online={networkStatus.online} />
-      <ConnectionTypePill type={networkStatus.type} />
     </div>
   );
 }
