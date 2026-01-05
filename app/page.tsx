@@ -4,12 +4,13 @@ import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { getQualityMode } from "@/lib/qualityMode";
 import DataSaverBanner from "@/components/DataSaverBanner";
 import AdaptiveImage from "@/components/AdaptiveImage";
+import { NetworkSettingsModal } from "@/components/NetworkSettingsModal";
 
 export default function Home() {
   const network = useNetworkStatus();
   const quality = getQualityMode(network);
   return (
-    <main className="flex flex-col bg-zinc-100 min-h-screen">
+    <main className="flex flex-col bg-zinc-100 min-h-screen relative">
       <header className="flex justify-between items-center px-8 py-6">
         <span className="text-blue-600 text-2xl font-bold">NetSense</span>
         <NetworkStatusPills networkStatus={network} />
@@ -54,6 +55,7 @@ export default function Home() {
           alt="A beautiful landscape"
         />
       </section>
+      <NetworkSettingsModal />
     </main>
   );
 }

@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { NetworkStatus } from "@/lib/qualityMode";
+import { useNetworkSettings } from "@/contexts/NetworkSettingsContext";
 
 export function useNetworkStatus(): NetworkStatus {
-  const [network, setNetwork] = useState<NetworkStatus>({
+  const { settings } = useNetworkSettings();
+  const [realNetwork, setRealNetwork] = useState<NetworkStatus>({
     effectiveType: "4g",
     saveData: false,
     online: true,
@@ -10,7 +12,7 @@ export function useNetworkStatus(): NetworkStatus {
 
   useEffect(() => {
     const updateStatus = () => {
-      setNetwork({
+      setRealNetwork({
         effectiveType: (navigator as any).connection?.effectiveType || "4g",
         saveData: (navigator as any).connection?.saveData || false,
         online: navigator.onLine,
@@ -31,9 +33,39 @@ export function useNetworkStatus(): NetworkStatus {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log("Current network state:", network);
-  // }, [network]);
+  // Merge manual settings with real network status
+  // When settings are "auto", use the real network values
+  const network = useMemo<NetworkStatus>(() => {
+    let effectiveType: NetworkStatus["effectiveType"] =
+      realNetwork.effectiveType;
+
+    // Map connection setting to effectiveType
+    if (settings.connection !== "auto") {
+      effectiveType = settings.connection;
+    }
+
+    // Map networkStatus setting
+    const online =
+      settings.networkStatus === "online"
+        ? true
+        : settings.networkStatus === "offline"
+        ? false
+        : realNetwork.online;
+
+    // Map dataSaver setting
+    const saveData =
+      settings.dataSaver === "on"
+        ? true
+        : settings.dataSaver === "off"
+        ? false
+        : realNetwork.saveData;
+
+    return {
+      effectiveType,
+      saveData,
+      online,
+    };
+  }, [realNetwork, settings]);
 
   return network;
 }
