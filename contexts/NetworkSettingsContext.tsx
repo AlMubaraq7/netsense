@@ -18,6 +18,8 @@ export type NetworkSettings = {
 type NetworkSettingsContextType = {
   settings: NetworkSettings;
   updateSettings: (newSettings: Partial<NetworkSettings>) => void;
+  isModalOpen: boolean;
+  toggleModal: () => void;
 };
 
 const defaultSettings: NetworkSettings = {
@@ -34,14 +36,19 @@ const NetworkSettingsContext = createContext<
 
 export function NetworkSettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<NetworkSettings>(defaultSettings);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // useCallback ????
   const updateSettings = (newSettings: Partial<NetworkSettings>) => {
     setSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
   return (
-    <NetworkSettingsContext.Provider value={{ settings, updateSettings }}>
+    <NetworkSettingsContext.Provider
+      value={{ settings, updateSettings, isModalOpen, toggleModal }}
+    >
       {children}
     </NetworkSettingsContext.Provider>
   );

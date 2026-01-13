@@ -5,10 +5,13 @@ import { getQualityMode } from "@/lib/qualityMode";
 import DataSaverBanner from "@/components/DataSaverBanner";
 import AdaptiveImage from "@/components/AdaptiveImage";
 import { NetworkSettingsModal } from "@/components/NetworkSettingsModal";
+import { useNetworkSettings } from "@/contexts/NetworkSettingsContext";
 
 export default function Home() {
   const network = useNetworkStatus();
   const quality = getQualityMode(network);
+  const { toggleModal } = useNetworkSettings();
+
   return (
     <main className="flex flex-col bg-zinc-100 min-h-screen relative">
       <header className="flex justify-between items-center px-8 py-6">
@@ -31,7 +34,10 @@ export default function Home() {
         <p className="text-gray-500 text-lg">
           A network-aware experience that adapts seamlessly to your connection
         </p>
-        <button className="bg-violet-700 px-4 py-2 rounded-md cursor-pointer hover:bg-violet-500">
+        <button
+          onClick={toggleModal}
+          className="bg-violet-700 px-4 py-2 rounded-md cursor-pointer hover:bg-violet-500"
+        >
           Simulate Network Change
         </button>
       </section>

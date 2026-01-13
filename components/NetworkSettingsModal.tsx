@@ -10,7 +10,15 @@ import {
 } from "@/contexts/NetworkSettingsContext";
 
 export function NetworkSettingsModal() {
-  const { settings, updateSettings } = useNetworkSettings();
+  const { settings, updateSettings, isModalOpen, toggleModal } =
+    useNetworkSettings();
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only close if clicking the backdrop itself, not the modal content
+    if (e.target === e.currentTarget) {
+      toggleModal();
+    }
+  };
 
   const isConnectionDisabled = settings.quality === "auto";
   const isForceFullExpEnabled = settings.forceFullExperience === "on";
@@ -62,9 +70,39 @@ export function NetworkSettingsModal() {
     }
   };
 
+  if (!isModalOpen) return null;
+
   return (
-    <div className="w-full h-full backdrop-blur-[0px] absolute flex justify-center items-center">
-      <div className="max-h-[90vh] w-[500px] shadow-sm shadow-gray-900/50 rounded-md p-8 bg-gray-100 text-black">
+    <div
+      className="w-full h-full backdrop-blur-[5px] absolute flex justify-center items-center"
+      onClick={handleBackdropClick}
+    >
+      <div
+        className="max-h-[90vh] w-[500px] shadow-sm shadow-gray-900/50 rounded-md p-8 bg-gray-100 text-black relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={toggleModal}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
           Network Settings
         </h2>
